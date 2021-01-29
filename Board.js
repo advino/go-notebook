@@ -1,6 +1,7 @@
 class Board {
 
     constructor(_count) {
+        
         this.count = _count;
         this.board = [];
         this.turn = true;
@@ -37,13 +38,15 @@ class Board {
         }
 
         console.log("Board set with size of", this.count);
+        console.log("Place pieces by typing in their x,y coordinates");
+        console.log("e.g 3,3"); 
     }
 
     placePiece(x, y) {
         if(this.turn) {
-            this.board[x][y] = 1;
+            this.board[y][x] = 1;
         } else {
-            this.board[x][y] = 0;
+            this.board[y][x] = 0;
         }
 
         this.changeTurn();
@@ -61,6 +64,8 @@ class Board {
     }
 
     renderBoard() {
+
+        console.log("-----------------");
         for(let i = 0; i < this.count; i++) {
             let row = "";
             this.board[i].forEach(element => {
