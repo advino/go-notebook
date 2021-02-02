@@ -11,3 +11,4 @@ stdin.addListener("data", d => {
     let location = game.parseLocation(d);
     game.placePiece(location[0], location[1]);
 });
+
