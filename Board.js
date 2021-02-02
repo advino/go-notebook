@@ -1,23 +1,24 @@
+let STONE = require('./Stone.js');
+
 class Board {
 
-    constructor(_count) {
+    constructor(_size) {
         
-        this.count = _count;
+        this.size = _size;
         this.board = [];
         this.turn = true;
+        this.move = 0;
     }
 
     board() {
         return this.board;
     }
 
-    count() {
-
-        return this.count;
+    size() {
+        return this.size;
     }
 
-    currentTurn() {
-        
+    currentTurn() {        
         if(this.turn) {
             return "black";
         } else { 
@@ -32,25 +33,26 @@ class Board {
 
     initializeBoard() {
 
-        for(let i = 0; i < this.count; i++) {
-            let arr = new Array(this.count).fill(null);
+        for(let i = 0; i < this.size; i++) {
+            let arr = new Array(this.size).fill(0);
             this.board.push(arr);
         }
 
-        console.log("Board set with size of", this.count);
+        console.log("Board set with size of", this.size);
         console.log("Place pieces by typing in their x,y coordinates");
         console.log("e.g 3,3"); 
     }
 
     placePiece(x, y) {
-        if(this.turn) {
-            this.board[y][x] = 1;
-        } else {
-            this.board[y][x] = 0;
-        }
+
+
+
+        this.board[y][x] = new STONE(this.turn, [x,y]);
+
 
         this.changeTurn();
         this.renderBoard();
+        this.move++;
     }   
 
     parseLocation(data) {
@@ -66,13 +68,17 @@ class Board {
     renderBoard() {
 
         console.log("-----------------");
-        for(let i = 0; i < this.count; i++) {
+        for(let i = 0; i < this.size; i++) {
             let row = "";
             this.board[i].forEach(element => {
-                if(element === 1) {
-                    row += "⚫️";
-                } else if(element === 0) {
-                    row += "⚪️";
+
+                if(typeof element === 'object') {
+                    let color = element.getColor();
+                    if(color === "black") {
+                        row += "⚫️";
+                    } else {
+                        row += "⚪️";
+                    }
                 } else {
                     row += "➕";
                 }
