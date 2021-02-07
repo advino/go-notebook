@@ -45,8 +45,6 @@ class Board {
 
     placePiece(x, y) {
 
-
-
         this.board[y][x] = new STONE(this.turn, [x,y]);
 
         this.parseBoard();
