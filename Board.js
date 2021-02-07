@@ -49,7 +49,7 @@ class Board {
 
         this.board[y][x] = new STONE(this.turn, [x,y]);
 
-
+        this.parseBoard();
         this.changeTurn();
         this.renderBoard();
         this.move++;
@@ -63,6 +63,62 @@ class Board {
         });
 
         return loc;
+    }
+
+    checkStone(elm){
+        let loc = elm.getLocation();
+        let color = elm.getColor();
+
+        let x = loc[0];
+        let y = loc[1];
+
+        let points = [
+            [y, x + 1], //one to right
+            [y, x - 1], //one to the left
+            [y + 1, x], //one below
+            [y - 1, x] //one above
+        ]
+
+        let liberties = points.map(p => {
+
+            let locX = p[0];
+            let locY = p[1];
+
+            let s = this.board[locX][locY];
+            let status = false;
+            if(typeof s == 'object') {
+                let c = s.getColor();
+                status = c !== color;
+            } 
+
+            return status;
+        });
+
+        let currentLib = 4;
+        let libCount = liberties.filter(l => {
+            return l === true;
+        });
+
+        let updatedLib = currentLib - libCount.length;
+        
+        return updatedLib;
+    }
+
+    parseBoard() {
+        for(let i = 0; i < this.size; i++) {
+            this.board[i].forEach(elm => {
+                if(typeof elm === 'object') {
+                    let lib = this.checkStone(elm);
+                    console.log(lib);
+                    if(lib > 0) {
+                        elm.updateLiberties(lib);
+                    } else {
+                        let loc = elm.getLocation();
+                        this.board[loc[1]][loc[0]] = 0;
+                    }
+                }
+            })
+        }
     }
 
     renderBoard() {
