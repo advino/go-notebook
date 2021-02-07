@@ -109,7 +109,7 @@ class Board {
             this.board[i].forEach(elm => {
                 if(typeof elm === 'object') {
                     let lib = this.checkStone(elm);
-                    console.log(lib);
+
                     if(lib > 0) {
                         elm.updateLiberties(lib);
                     } else {
